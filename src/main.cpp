@@ -11,7 +11,6 @@
 #include <textures.hpp>
 #include <main_menu.hpp>
 #include <menu.hpp>
-#include <cmath>
 #include <ufo.hpp>
 #include <select_level.hpp>
 #include <max_score.hpp>
