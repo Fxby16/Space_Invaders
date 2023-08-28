@@ -11,9 +11,9 @@ FILE *fp=fopen("./max_score.txt","r");
     }else{
         fscanf(fp,"%d",&n);
         num.create_text(font,{255,255,255,0},0,std::to_string(n).c_str());
+        fclose(fp);
     }
     text.create_text(font,{255,255,255,0},0,"Max Score:");
-    fclose(fp);
 
     text.set_x_y(WINDOW_WIDTH-20-(text.get_size().first+10+num.get_size().first)/2,MAX_SCORE_Y);
     num.set_x_y(text.get_x_y().first+text.get_size().first+10,MAX_SCORE_Y);
