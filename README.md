@@ -35,3 +35,16 @@ To run the executable file run
 ```
 bin/Space_Invaders
 ```
+
+## Controls
+- `Esc`: exit to main menu (enabled only when you are in the select level menu)
+- `Q`: quit
+- `M`: exit to main menu (enabled only when you lose)
+- `Enter`: try again (enabled only when you lose)
+- `Space`: shoot
+- `A` or `Left Arrow`: move left
+- `D` or `Right Arrow`: move right
+- `F`: toggle fullscreen (enabled only in main menu and in select level menu
+
+## Notes
+- sometimes, the window doesn't update correctly when passing from windowed mode to fullscreen. 
