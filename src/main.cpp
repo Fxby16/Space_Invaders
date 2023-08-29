@@ -58,7 +58,7 @@ bool sleep=true;
         std::chrono::microseconds delta=std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now()-previous_time_point);
         time_elapsed+=delta;
         previous_time_point+=delta;
-        if(FRAME_TIME<=time_elapsed){
+        while(FRAME_TIME<=time_elapsed){
             sleep=true;
             time_elapsed-=FRAME_TIME;
             SDL_PollEvent(&event);
