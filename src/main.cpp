@@ -15,6 +15,7 @@
 #include <select_level.hpp>
 #include <max_score.hpp>
 #include <level.hpp>
+#include <iostream>
 
 int main(int argc,char *argv[]){
 
@@ -51,6 +52,9 @@ bool render=true;
 bool sleep=true;
 
     while(!quit){
+        SDL_PollEvent(&event);
+        if(event.type==SDL_QUIT)
+            quit=true;
         if(sleep){    
             SDL_Delay(10);
             sleep=false;
@@ -59,18 +63,11 @@ bool sleep=true;
         time_elapsed+=delta;
         previous_time_point+=delta;
         while(FRAME_TIME<=time_elapsed){
+            const Uint8 *keys=SDL_GetKeyboardState(NULL);
+            if(keys[SDL_SCANCODE_Q])
+                quit=true;
             sleep=true;
             time_elapsed-=FRAME_TIME;
-            SDL_PollEvent(&event);
-            switch(event.type){
-                case SDL_QUIT:
-                    quit=true;
-                    break;
-                case SDL_KEYDOWN:
-                    if(event.key.keysym.sym==SDLK_q)
-                        quit=true;
-                    break;
-            }
             if(!show_main_menu && !show_select_level){
                 if(render){
                     if(count_enemies()){
@@ -113,7 +110,7 @@ bool sleep=true;
                     SDL_RenderPresent(renderer);
                 }
             }else if(show_main_menu){
-                if(event.type==SDL_KEYDOWN && event.key.keysym.sym==SDLK_f)
+                if(keys[SDL_SCANCODE_F])
                     SetFullScreen();
                 if(main_menu.check_play_pressed()){
                     show_main_menu=false;
@@ -121,7 +118,7 @@ bool sleep=true;
                     continue;
                 }
                 if(main_menu.check_quit_pressed())
-                    break;
+                    goto EXIT;
                 main_menu.render();
                 SDL_RenderPresent(renderer);
             }
@@ -131,8 +128,8 @@ bool sleep=true;
                 SDL_RenderCopy(renderer,background.GetTexture(),NULL,&background_rect);
                 menu.render(menu_state);
                 SDL_RenderPresent(renderer);
-                if(event.type==SDL_KEYDOWN && menu_state==false){
-                    if(event.key.keysym.sym==SDLK_RETURN){
+                if(menu_state==false){
+                    if(keys[SDL_SCANCODE_RETURN]){
                         show_menu=false;
                         render=true;
                         generate_enemies();
@@ -141,7 +138,7 @@ bool sleep=true;
                         ship_projectiles.clear();
                         ::score=0;
                     }
-                    else if(event.key.keysym.sym==SDLK_m){
+                    else if(keys[SDL_SCANCODE_M]){
                         show_menu=false;
                         render=true;
                         show_main_menu=true;
@@ -168,7 +165,7 @@ bool sleep=true;
                         previous_time_point=std::chrono::steady_clock::now();
                         time_elapsed=std::chrono::microseconds(0);
                     }else{
-                        if(event.type==SDL_KEYDOWN && event.key.keysym.sym==SDLK_m){
+                        if(keys[SDL_SCANCODE_M]){
                             show_menu=false;
                             render=true;
                             show_main_menu=true;
@@ -184,18 +181,18 @@ bool sleep=true;
                 select_level.update();
                 select_level.render();
                 SDL_RenderPresent(renderer);
-                if(event.type==SDL_KEYDOWN)
-                    if(event.key.keysym.sym==SDLK_RETURN){
-                       show_select_level=false; 
-                        init_enemies();
-                    }else if(event.key.keysym.sym==SDLK_ESCAPE){
-                        show_select_level=false;
-                        show_main_menu=true;
-                    }else if(event.key.keysym.sym==SDLK_f)
-                        SetFullScreen();
+                if(keys[SDL_SCANCODE_RETURN]){
+                   show_select_level=false; 
+                    init_enemies();
+                }else if(keys[SDL_SCANCODE_ESCAPE]){
+                    show_select_level=false;
+                    show_main_menu=true;
+                }else if(keys[SDL_SCANCODE_F])
+                    SetFullScreen();
             }
         }
     }
+EXIT:
     spaceship.destroy();
     enemies_destroy_textures();
     score.destroy();
