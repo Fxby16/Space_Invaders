@@ -10,9 +10,21 @@ My remake of the original Space Invaders game
 - make (optional)
 
 ## Installation
-If you are on Windows, you can use the preinstalled SDL version in SDL folder (it's the 64-bit version). If you are on Linux you can run this command to install SDL
+If you are on Windows, you can use the preinstalled SDL version in SDL folder (it's the 64-bit version). 
+If you are on Linux you have to build SDL from the source code since the package version gives some problems:
+
 ```
-sudo apt-get install libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev
+git clone https://github.com/libsdl-org/SDL.git -b SDL2
+cd SDL
+mkdir build
+cd build
+../configure
+make
+sudo make install
+```
+Then you can install SDL_ttf and SDL_image (you can also build them by yourself):
+```
+sudo apt-get install libsdl2-ttf-dev libsdl2-image-dev
 ```
 ## Build
 You can find two makefiles in makefiles folder. Move the one corresponding to your OS in the main folder and run 
